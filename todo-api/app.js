@@ -8,6 +8,7 @@ const responseHandler = require('./middlewares/responseHandler');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const todoRouter = require('./routes/todo');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(responseHandler);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/todo', todoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

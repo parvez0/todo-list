@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { Session } = require('../db-seeds/mongo');
+const { Session } = require('../models/mongo');
 
 /**
  * middleware for authenticating the server based on valid jwt token

@@ -82,13 +82,30 @@ const sessionSchema = new Schema({
 sessionSchema.index({ _id: 1, active: 1 });
 
 /**
+ * schema for todos collection where all the todos will be stored
+ */
+const todoSchema = new Schema({
+    userId: { type: String, required: true },
+    name: { type: String, required: true },
+    description: { type: String },
+    active: { type: String },
+    createdDate: { type: Date, default: Date.now() },
+    updatedDate: { type: Date, default: Date.now() }
+});
+
+todoSchema.index({ userId: 1 });
+todoSchema.index({ userId: 1, active: 1 });
+
+/**
  * collection models objects
  */
 const Users = Model('users', usersSchema);
 const Session = Model('sessions', sessionSchema);
+const Todo = Model('todos', todoSchema)
 
 module.exports = {
     mongoose,
     Users,
-    Session
+    Session,
+    Todo
 };

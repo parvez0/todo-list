@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-/* GET home page. */
-router.get('/health-check', function(req, res, next) {
+router.get('/health-check', (req, res) => {
   res.publish(true, "Server is ready to accept connections");
 });
 

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { signup, verifyUser } = require('../models/user');
+const auth = require('../middlewares/auth');
 
 /**
  * sing-up as end user with personalised experience
@@ -33,6 +34,13 @@ router.post('/login', async (req, res) => {
     } catch (e) {
         return res.publish(false, 'Failed to login', { message: e.message }, e.statusCode ? e.statusCode() : 500);
     }
+});
+
+/**
+ * verify user session
+ */
+router.get('/refresh', auth, async (req, res) => {
+   res.publish(true, 'session is valid');
 });
 
 module.exports = router;
