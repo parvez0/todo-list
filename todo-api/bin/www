@@ -1,25 +1,50 @@
 #!/usr/bin/env node
 
+/* eslint-disable no-process-exit */
+/**
+ * @param o
+ * @returns {*}
+ * Freezes the Object to avoid further changes
+ */
+const deepFreeze = (o) => {
+  Object.freeze(o);
+  Object.getOwnPropertyNames(o).forEach(function (prop) {
+    if (o.hasOwnProperty(prop) &&
+        o[prop] !== null &&
+        (typeof o[prop] === 'object' || typeof o[prop] === 'function') &&
+        !Object.isFrozen(o[prop])) {
+      deepFreeze(o[prop]);
+    }
+  });
+  return o;
+};
+
+/**
+ * setting global read only variables
+ */
+global.logger = deepFreeze(require('../logger'));
+global.config = deepFreeze(require('../config.js'));
+global.CustomError = deepFreeze(require('../middlewares/customErrorMessage'));
+
 /**
  * Module dependencies.
  */
-
-var app = require('../app');
-var debug = require('debug')('todo-api:server');
-var http = require('http');
+const app = require('../app');
+const debug = require('debug')('todo-api:server');
+const http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -34,7 +59,7 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  const port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -58,7 +83,7 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
+  const bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
 
@@ -82,8 +107,9 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
+  console.log(`[SERVER] server is listening on port - ${port}`);
+  const addr = server.address();
+  const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
