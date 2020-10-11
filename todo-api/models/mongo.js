@@ -86,9 +86,9 @@ sessionSchema.index({ _id: 1, active: 1 });
  */
 const todoSchema = new Schema({
     userId: { type: String, required: true },
-    name: { type: String, required: true },
+    task: { type: String, required: true },
     description: { type: String },
-    active: { type: String },
+    active: { type: String, default: true },
     createdDate: { type: Date, default: Date.now() },
     updatedDate: { type: Date, default: Date.now() }
 });
